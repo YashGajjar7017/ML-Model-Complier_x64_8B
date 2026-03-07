@@ -1,0 +1,186 @@
+{
+  "example_problems": [
+    {
+      "id": "fib_001",
+      "title": "Fibonacci Sequence",
+      "description": "Generate a function to compute the Fibonacci sequence up to n terms",
+      "languages": ["python", "javascript", "java", "cpp"],
+      "test_cases": [
+        {
+          "input": 0,
+          "expected_output": [],
+          "description": "Empty sequence for n=0"
+        },
+        {
+          "input": 1,
+          "expected_output": [0],
+          "description": "First element for n=1"
+        },
+        {
+          "input": 5,
+          "expected_output": [0, 1, 1, 2, 3],
+          "description": "First 5 Fibonacci numbers"
+        },
+        {
+          "input": 10,
+          "expected_output": [0, 1, 1, 2, 3, 5, 8, 13, 21, 34],
+          "description": "First 10 Fibonacci numbers"
+        }
+      ],
+      "constraints": {
+        "time_limit": 1.0,
+        "memory_limit": 50,
+        "max_n": 100
+      },
+      "expected_complexity": "O(n)",
+      "difficulty": "easy"
+    },
+    {
+      "id": "sort_001",
+      "title": "Efficient Sorting",
+      "description": "Implement an efficient sorting algorithm (merge sort or quicksort)",
+      "languages": ["python", "javascript", "java"],
+      "test_cases": [
+        {
+          "input": [],
+          "expected_output": [],
+          "description": "Empty array"
+        },
+        {
+          "input": [1],
+          "expected_output": [1],
+          "description": "Single element"
+        },
+        {
+          "input": [3, 1, 4, 1, 5, 9, 2, 6],
+          "expected_output": [1, 1, 2, 3, 4, 5, 6, 9],
+          "description": "Unsorted array with duplicates"
+        },
+        {
+          "input": [5, 4, 3, 2, 1],
+          "expected_output": [1, 2, 3, 4, 5],
+          "description": "Reverse sorted array"
+        }
+      ],
+      "constraints": {
+        "time_limit": 1.0,
+        "memory_limit": 100,
+        "max_size": 10000
+      },
+      "expected_complexity": "O(n log n)",
+      "difficulty": "medium"
+    },
+    {
+      "id": "binsearch_001",
+      "title": "Binary Search",
+      "description": "Implement binary search on a sorted array",
+      "languages": ["python", "javascript", "java", "cpp"],
+      "test_cases": [
+        {
+          "input": {"array": [1, 3, 5, 7, 9], "target": 5},
+          "expected_output": 2,
+          "description": "Element found in middle"
+        },
+        {
+          "input": {"array": [1, 3, 5, 7, 9], "target": 1},
+          "expected_output": 0,
+          "description": "Element at start"
+        },
+        {
+          "input": {"array": [1, 3, 5, 7, 9], "target": 9},
+          "expected_output": 4,
+          "description": "Element at end"
+        },
+        {
+          "input": {"array": [1, 3, 5, 7, 9], "target": 6},
+          "expected_output": -1,
+          "description": "Element not found"
+        }
+      ],
+      "constraints": {
+        "time_limit": 0.5,
+        "memory_limit": 50,
+        "max_size": 1000000
+      },
+      "expected_complexity": "O(log n)",
+      "difficulty": "medium"
+    },
+    {
+      "id": "dp_001",
+      "title": "Dynamic Programming: Coin Change",
+      "description": "Find the minimum number of coins to make a given amount",
+      "languages": ["python", "javascript", "java"],
+      "test_cases": [
+        {
+          "input": {"coins": [1, 2, 5], "amount": 5},
+          "expected_output": 1,
+          "description": "Single coin covers amount"
+        },
+        {
+          "input": {"coins": [2], "amount": 3},
+          "expected_output": -1,
+          "description": "Impossible to make amount"
+        },
+        {
+          "input": {"coins": [10], "amount": 10},
+          "expected_output": 1,
+          "description": "Exact match"
+        }
+      ],
+      "constraints": {
+        "time_limit": 1.0,
+        "memory_limit": 100,
+        "max_amount": 5000
+      },
+      "expected_complexity": "O(amount * n)",
+      "difficulty": "hard"
+    }
+  ],
+  "evaluation_rubric": {
+    "correctness": {
+      "weight": 0.4,
+      "criteria": "Code produces correct output for all test cases"
+    },
+    "efficiency": {
+      "weight": 0.3,
+      "criteria": "Code meets time and space complexity requirements"
+    },
+    "readability": {
+      "weight": 0.2,
+      "criteria": "Code is well-structured and properly commented"
+    },
+    "best_practices": {
+      "weight": 0.1,
+      "criteria": "Code follows language conventions and best practices"
+    }
+  },
+  "training_configuration": {
+    "automatic_training": {
+      "enabled": true,
+      "execution_timeout": 5,
+      "max_concurrent_tests": 4,
+      "metric_collection": {
+        "execution_time": true,
+        "memory_usage": true,
+        "correctness": true
+      }
+    },
+    "manual_training": {
+      "enabled": true,
+      "feedback_types": [
+        "rating",
+        "correctness",
+        "efficiency",
+        "readability",
+        "suggestions"
+      ],
+      "learning_frequency": "after_feedback"
+    },
+    "reinforcement_learning": {
+      "enabled": true,
+      "reward_function": "correctness_weighted",
+      "penalty_for_timeout": -0.5,
+      "bonus_for_optimization": 0.1
+    }
+  }
+}
