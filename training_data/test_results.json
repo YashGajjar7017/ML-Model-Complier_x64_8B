@@ -1,0 +1,38 @@
+[
+  {
+    "test_id": "0",
+    "passed": true,
+    "execution_time": 0.0,
+    "memory_usage": 0.0,
+    "output": "[]",
+    "error": null,
+    "expected_output": "[]"
+  },
+  {
+    "test_id": "1",
+    "passed": true,
+    "execution_time": 0.0,
+    "memory_usage": 0.0,
+    "output": "[0]",
+    "error": null,
+    "expected_output": "[0]"
+  },
+  {
+    "test_id": "2",
+    "passed": true,
+    "execution_time": 0.0,
+    "memory_usage": 0.0,
+    "output": "[0, 1, 1, 2, 3]",
+    "error": null,
+    "expected_output": "[0, 1, 1, 2, 3]"
+  },
+  {
+    "test_id": "3",
+    "passed": true,
+    "execution_time": 0.000993490219116211,
+    "memory_usage": 0.0,
+    "output": "[0, 1, 1, 2, 3, 5, 8]",
+    "error": null,
+    "expected_output": "[0, 1, 1, 2, 3, 5, 8]"
+  }
+]

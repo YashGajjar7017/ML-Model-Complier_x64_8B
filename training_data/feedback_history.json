@@ -1,0 +1,13 @@
+[
+  {
+    "generation_id": "gen_001",
+    "rating": 5,
+    "correctness": true,
+    "efficiency_rating": 4,
+    "readability_rating": 5,
+    "comments": "Very clean and efficient implementation",
+    "suggested_improvements": "Could add type hints; Could add docstring examples",
+    "timestamp": null,
+    "user_id": "expert_reviewer"
+  }
+]

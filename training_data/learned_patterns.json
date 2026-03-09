@@ -1,0 +1,11 @@
+{
+  "python": {
+    "fibonacci_pattern": {
+      "algorithm": "fibonacci",
+      "approach": "iterative",
+      "time_complexity": "O(n)",
+      "space_complexity": "O(n)",
+      "user_rating": 5
+    }
+  }
+}

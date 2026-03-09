@@ -8,7 +8,7 @@ import json
 import logging
 from datetime import datetime
 
-from codeforge_ai.core_engine import CodeForgeAI, Language, CodeGenerationRequest, format_json_response
+from codeforge_ai.core_engine import CodeForgeAI, Language, CodeGenerationRequest, format_json_response, ModelType
 from codeforge_ai.manual_training import ManualTrainingSystem, CodeFeedback, create_feedback_from_dict
 from codeforge_ai.automatic_training import AutomaticTrainingSystem
 
@@ -41,6 +41,7 @@ def generate_code():
     {
         "problem_description": "...",
         "language": "python|javascript|java|cpp|rust|go",
+        "model_type": "pattern_based|template_based|optimization_focused|readability_focused|performance_focused",
         "constraints": {...},
         "examples": [...]
     }
@@ -57,10 +58,12 @@ def generate_code():
         
         # Create request
         language = Language[data['language'].upper()]
+        model_type = ModelType[data.get('model_type', 'pattern_based').upper().replace('-', '_')]
         
         request_obj = CodeGenerationRequest(
             problem_description=data['problem_description'],
             language=language,
+            model_type=model_type,
             constraints=data.get('constraints'),
             examples=data.get('examples'),
             style_guide=data.get('style_guide')
@@ -69,13 +72,13 @@ def generate_code():
         # Generate code
         response = code_forge.generate_code(request_obj)
         
-        logger.info(f"Generated code with confidence: {response.confidence:.2f}")
+        logger.info(f"Generated {language.value} code using {model_type.value} model with confidence: {response.confidence:.2f}")
         
         # Return JSON response
         return jsonify(format_json_response(response)), 200
     
     except KeyError as e:
-        return jsonify({'error': f'Invalid language: {e}'}), 400
+        return jsonify({'error': f'Invalid language or model type: {e}'}), 400
     except Exception as e:
         logger.error(f"Error during code generation: {e}")
         return jsonify({'error': str(e)}), 500
@@ -287,36 +290,79 @@ def get_learned_patterns(language):
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('/status', methods=['GET'])
-def get_system_status():
-    """Get overall system status and statistics"""
+@app.route('/data/statistics', methods=['GET'])
+def get_data_statistics():
+    """Get statistics about categorized training data"""
     try:
-        manual_metrics = manual_trainer.get_learning_metrics()
-        auto_metrics = auto_trainer.get_performance_metrics()
-        
-        status = {
-            'system': 'CodeForge AI',
-            'status': 'running',
+        stats = code_forge.get_data_statistics()
+        return jsonify({
             'timestamp': datetime.now().isoformat(),
-            'manual_training': {
-                'total_feedback': len(manual_trainer.feedback_history),
-                'languages_trained': len(set(f.get('language') for f in manual_trainer.feedback_history 
-                                             if f.get('language')))
-            },
-            'automatic_training': {
-                'total_tests_executed': len(auto_trainer.test_results),
-                'languages_tested': len(auto_metrics) if auto_metrics else 0
-            },
-            'overall_coverage': {
-                'feedback_records': len(manual_trainer.feedback_history),
-                'test_executions': len(auto_trainer.test_results)
-            }
-        }
-        
-        return jsonify(status), 200
+            'statistics': stats
+        }), 200
     
     except Exception as e:
-        logger.error(f"Error getting system status: {e}")
+        logger.error(f"Error getting data statistics: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/data/similar', methods=['POST'])
+def find_similar_problems():
+    """
+    Find similar problems based on description
+    
+    Request body:
+    {
+        "problem_description": "...",
+        "limit": 5
+    }
+    """
+    try:
+        data = request.json
+        problem_description = data.get('problem_description', '')
+        limit = data.get('limit', 5)
+        
+        if not problem_description:
+            return jsonify({'error': 'Missing problem_description'}), 400
+        
+        similar_problems = code_forge.get_similar_problems(problem_description, limit)
+        
+        return jsonify({
+            'query': problem_description,
+            'limit': limit,
+            'similar_problems': similar_problems,
+            'count': len(similar_problems)
+        }), 200
+    
+    except Exception as e:
+        logger.error(f"Error finding similar problems: {e}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/data/recommendations', methods=['POST'])
+def get_recommendations():
+    """
+    Get recommendations based on criteria
+    
+    Request body:
+    {
+        "language": "python",
+        "problem_type": "sorting",
+        "complexity": "medium",
+        "min_rating": 3
+    }
+    """
+    try:
+        criteria = request.json or {}
+        recommendations = code_forge.get_recommendations(criteria)
+        
+        return jsonify({
+            'criteria': criteria,
+            'recommendations': recommendations,
+            'count': len(recommendations)
+        }), 200
+    
+    except Exception as e:
+        logger.error(f"Error getting recommendations: {e}")
         return jsonify({'error': str(e)}), 500
 
 
